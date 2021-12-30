@@ -699,8 +699,8 @@ int dhcpv6_request(enum dhcpv6_msg type)
 		// Receive rounds
 		for (; len < 0 && (round_start < round_end);
 				round_start = odhcp6c_get_milli_time()) {
-			syslog(LOG_NOTICE, "Loop round_start %"PRIu64" round_end%"PRIu64" ",
-				round_start, round_end);
+			syslog(LOG_NOTICE, "Loop start %"PRIu64" round_start %"PRIu64" elapsed %"PRIu64" timeout %"PRIu64" ",
+				start, round_start, elapsed, timeout);
 
 			uint8_t buf[1536];
 			union {
@@ -728,9 +728,7 @@ int dhcpv6_request(enum dhcpv6_msg type)
 						strerror(errno));
 
 			// Receive cycle
-			syslog(LOG_NOTICE, "Beginning of recvmsg");
 			len = recvmsg(sock, &msg, 0);
-			syslog(LOG_NOTICE, "End of recvmsg %zd", len);
 			if (len < 0)
 				continue;
 
